@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Кроссворд: Управление Проектами</title>
+<style>
+    @font-face {
+        font-family: Gropled-Bold;
+        src: url(Gropled-Bold.otf);
+    }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column; /* Элементы идут друг за другом вертикально */
+      align-items: center; /* Выравнивание содержимого по центру */
+    }
+    .modal {
+  display: none; /* Скрыто по умолчанию */
+  position: fixed; /* Оставаться на месте */
+  z-index: 1; /* Сидеть на вершине */
+  left: 0;
+  top: 0;
+  width: 100%; /* Полная ширина */
+  height: 100%; /* Полная высота */
+  overflow: auto; /* Включить прокрутку, если необходимо */
+  background-color: rgb(0,0,0); /* Цвет фона */
+  background-color: rgba(0,0,0,0.4); /* Цвет фона с прозрачностью */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% от верхней части и по центру */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Можно изменить на большую ширину */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+    .crossword-container {
+  display: flex;
+  flex-direction: row-reverse; /* Изменение направления основной оси */
+  align-items: center; /* Выравнивание элементов по центру */
+  justify-content: center; /* Центрирование элементов по горизонтали */
+}
+
+h2 {
+  margin-top: 0; /* Удаление верхнего отступа у заголовка */
+}
+    table.crossword {
+      border-collapse: collapse;
+      margin-left: 20px; /* Отступ справа от кроссворда */
+    }
+    td.cell {
+      width: 50px;
+      height: 50px;
+      border: 1px solid black;
+      position: relative;
+      padding: 0;
+    }
+    .cell-number {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-size: 12px;
+      color: grey;
+    }
+    .input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      text-transform: uppercase;
+      font-size: 20px;
+      text-align: center;
+      padding: 0;
+    }
+    .input.correct {
+      background-color: lightgreen;
+    }
+    .input.incorrect {
+      background-color: pink;
+    }
+    .question-container {
+      background-color: rgba(135, 206, 250, 0.7); /* Цветной прозрачный фон */
+      padding: 10px;
+      border-radius: 10px; /* Скругленные углы */
+      max-width: 300px; /* Максимальная ширина блока с вопросами */
+    }
+    .question {
+      margin-top: 20px;
+    }
+    h2 {
+      text-align: center; /* Выравнивание заголовка по центру */
+      font-family: Gropled-Bold;;
+    }
+  </style>
+</head>
+<body>
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p id="congratulations">Поздравляем! Кроссворд пройден.</p>
+          <p id="timeSpent"></p>
+        </div>
+      </div>
+    <h2>Кроссворд "Управление Проектами. Диаграмма Ганта"</h2>
+    <div class="crossword-container">
+    <table class="crossword">
+      <!-- Горизонтальное слово: ГАНТА -->
+
+      <tr>
+        <td class="cell"><span class="cell-number">1</span><input type="text" class="input h1" maxlength="1" data-index="0"></td>
+        <td class="cell"><input type="text" class="input h1" maxlength="1" data-index="1"></td>
+        <td class="cell"><input type="text" class="input h1" maxlength="1" data-index="2"></td>
+        <td class="cell"><input type="text" class="input h1" maxlength="1" data-index="3"></td>
+        <td class="cell"><input type="text" class="input h1" maxlength="1" data-index="4"></td>
+      </tr>
+      <!-- Горизонтальное слово: ПУТЬ -->
+      <tr>
+        <td class="cell"><span class="cell-number">2</span><input type="text" class="input h2" maxlength="1" data-index="0"></td>
+        <td class="cell"><input type="text" class="input h2" maxlength="1" data-index="1"></td>
+        <td class="cell"><input type="text" class="input h2" maxlength="1" data-index="2"></td>
+        <td class="cell"><input type="text" class="input h2" maxlength="1" data-index="3"></td>
+
+      </tr>
+      <!-- Горизонтальное слово: БЮДЖЕТ -->
+      <tr>
+        <td class="cell"><span class="cell-number">3</span><input type="text" class="input h3" maxlength="1" data-index="0"></td>
+        <td class="cell"><input type="text" class="input h3" maxlength="1" data-index="1"></td>
+        <td class="cell"><input type="text" class="input h3" maxlength="1" data-index="2"></td>
+        <td class="cell"><input type="text" class="input h3" maxlength="1" data-index="3"></td>
+        <td class="cell"><input type="text" class="input h3" maxlength="1" data-index="4"></td>
+        <td class="cell"><input type="text" class="input h3" maxlength="1" data-index="5"></td>
+      </tr>
+      <!-- Горизонтальное слово: ПЛАНИРОВАНИЕ -->
+      <tr>
+        <td class="cell"><span class="cell-number">4</span><input type="text" class="input h4" maxlength="1" data-index="0"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="1"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="2"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="3"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="4"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="5"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="6"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="7"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="8"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="9"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="10"></td>
+        <td class="cell"><input type="text" class="input h4" maxlength="1" data-index="11"></td>
+      </tr>
+      <!-- Горизонтальное слово: ПРЕДСТАВЛЕНИЕ -->
+<tr>
+    <td class="cell"><span class="cell-number">5</span><input type="text" class="input h5" maxlength="1" data-index="0"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="1"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="2"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="3"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="4"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="5"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="6"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="7"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="8"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="9"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="10"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="11"></td>
+    <td class="cell"><input type="text" class="input h5" maxlength="1" data-index="12"></td>
+  </tr>
+  <!-- Горизонтальное слово: ПРОЕКТ -->
+<tr>
+    <td class="cell"><span class="cell-number">6</span><input type="text" class="input h6" maxlength="1" data-index="0"></td>
+    <td class="cell"><input type="text" class="input h6" maxlength="1" data-index="1"></td>
+    <td class="cell"><input type="text" class="input h6" maxlength="1" data-index="2"></td>
+    <td class="cell"><input type="text" class="input h6" maxlength="1" data-index="3"></td>
+    <td class="cell"><input type="text" class="input h6" maxlength="1" data-index="4"></td>
+    <td class="cell"><input type="text" class="input h6" maxlength="1" data-index="5"></td>
+  </tr>
+  <!-- Горизонтальное слово: КОНЦЕПТУАЛЬНАЯ -->
+<tr>
+    <td class="cell"><span class="cell-number">7</span><input type="text" class="input h7" maxlength="1" data-index="0"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="1"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="2"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="3"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="4"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="5"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="6"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="7"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="8"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="9"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="10"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="11"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="12"></td>
+    <td class="cell"><input type="text" class="input h7" maxlength="1" data-index="13"></td>
+  </tr>
+  
+  <!-- Горизонтальное слово: КРАЙНИЙ -->
+  <tr>
+    <td class="cell"><span class="cell-number">8</span><input type="text" class="input h8" maxlength="1" data-index="0"></td>
+    <td class="cell"><input type="text" class="input h8" maxlength="1" data-index="1"></td>
+    <td class="cell"><input type="text" class="input h8" maxlength="1" data-index="2"></td>
+    <td class="cell"><input type="text" class="input h8" maxlength="1" data-index="3"></td>
+    <td class="cell"><input type="text" class="input h8" maxlength="1" data-index="4"></td>
+    <td class="cell"><input type="text" class="input h8" maxlength="1" data-index="5"></td>
+    <td class="cell"><input type="text" class="input h8" maxlength="1" data-index="6"></td>
+  </tr>
+  
+  <!-- Горизонтальное слово: ЗАДАЧА -->
+  <tr>
+    <td class="cell"><span class="cell-number">9</span><input type="text" class="input h9" maxlength="1" data-index="0"></td>
+    <td class="cell"><input type="text" class="input h9" maxlength="1" data-index="1"></td>
+    <td class="cell"><input type="text" class="input h9" maxlength="1" data-index="2"></td>
+    <td class="cell"><input type="text" class="input h9" maxlength="1" data-index="3"></td>
+    <td class="cell"><input type="text" class="input h9" maxlength="1" data-index="4"></td>
+    <td class="cell"><input type="text" class="input h9" maxlength="1" data-index="5пк"></td>
+  </tr>
+  
+  <!-- Горизонтальное слово: БЮДЖЕТИРОВАНИЕ -->
+  <tr>
+    <td class="cell"><span class="cell-number">10</span><input type="text" class="input h10" maxlength="1" data-index="0"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="1"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="2"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="3"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="4"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="5"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="6"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="7"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="8"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="9"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="10"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="11"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="12"></td>
+    <td class="cell"><input type="text" class="input h10" maxlength="1" data-index="13"></td>
+  </tr>
+    </table>
+    
+    <div class="question-container">
+        <p>1. Как называется вид диаграммы, применяемый для визуализации плана проекта?</p>
+        <p>2. Как обозначается последовательность этапов в сетевой диаграмме?</p>
+        <p>3. Какой ключевой элемент управления проектом связан с использованием ресурсов?</p>
+        <p>4. Какой процесс в управлении проектами задает основные этапы и моменты?</p>
+        <p>5. Как называется методика представления связанной информации из базы данных проекта?</p>
+        <p>6. Что представляет собой набор задач, распределенных во времени для достижения цели проекта?</p>
+        <p>7. Как называется этап в жизненном цикле проекта, охватывающий целеполагание, анализ инвестиций, обоснование и планирование?</p>
+        <p>8. Как именуется дата, после которой выполнение задачи становится невозможным?</p>
+        <p>9. Что общего у поручений, дел и заданий, которые требуется исполнить?</p>
+        <p>10. Какой процесс включает в себя составление и анализ бюджетов?</p>
+      </div>
+      
+</div>
+    <script>
+        const startTime = new Date();
+      // Массив правильных ответов
+      const correctAnswers = {
+        'h1': 'ГАНТА',
+        'h2': 'ПУТЬ',
+        'h3': 'БЮДЖЕТ',
+        'h4': 'ПЛАНИРОВАНИЕ',
+        'h5': 'ПРЕДСТАВЛЕНИЕ',
+        'h6': 'ПРОЕКТ',
+        'h7': 'КОНЦЕПТУАЛЬНАЯ',
+        'h8': 'КРАЙНИЙ',
+        'h9': 'ЗАДАЧА',
+        'h10': 'БЮДЖЕТИРОВАНИЕ',
+      };
+
+  document.querySelectorAll('.input').forEach(input => {
+    input.addEventListener('input', function(event) {
+      this.value = this.value.toUpperCase();
+      let parentCell = this.parentElement;
+      let nextCell = parentCell.nextElementSibling || parentCell.parentElement.nextElementSibling?.children[0];
+      let nextInput = nextCell ? nextCell.querySelector('.input') : null;
+
+      // Переход к следующему полю ввода, если текущее не пустое
+      if (this.value && nextInput) {
+        nextInput.focus();
+      }
+
+      let wordClass = Array.from(this.classList).find(cl => cl.startsWith('h') || cl.startsWith('v'));
+      if (wordClass) {
+        checkWord(wordClass);
+      }
+    });
+
+    input.addEventListener('keydown', function(event) {
+      if (event.key === "Backspace" && this.value === '') {
+        let prevCell = this.parentElement.previousElementSibling || this.parentElement.parentElement.previousElementSibling?.lastElementChild;
+        let prevInput = prevCell ? prevCell.querySelector('.input') : null;
+        let wordClass = this.classList[1];
+        if (prevInput) {
+          prevInput.focus();
+        }
+        // Проверка слова при удалении буквы
+        if (prevInput && prevCell.classList.contains(wordClass)) {
+          checkWord(wordClass);
+        }
+      }
+    });
+  });
+
+  // Проверка слова
+  function checkWord(wordClass) {
+        let wordInputs = Array.from(document.querySelectorAll(`.${wordClass}`));
+        let userAnswer = wordInputs.map(input => input.value).join('');
+
+        let isWordCorrect = userAnswer === correctAnswers[wordClass];
+        
+        wordInputs.forEach(input => {
+          if (isWordCorrect) {
+            input.classList.add('correct');
+            input.classList.remove('incorrect');
+            input.readOnly = true; // Сделать поле только для чтения, если ответ правильный
+          } else {
+            input.classList.remove('correct');
+            input.classList.add('incorrect');
+            input.readOnly = false; // Разрешить редактирование, если ответ неправильный
+          }
+        });
+        checkIfAllCorrect();
+      }
+
+// Проверка, что все слова правильные
+function checkIfAllCorrect() {
+  let allCorrect = true;
+  for (let key of Object.keys(correctAnswers)) {
+    let wordInputs = Array.from(document.querySelectorAll(`.${key}`));
+    let userAnswer = wordInputs.map(input => input.value).join('');
+    if (userAnswer !== correctAnswers[key]) {
+      allCorrect = false;
+      break;
+    }
+  }
+  
+  if (allCorrect) {
+    let endTime = new Date();
+    let timeSpent = (endTime - startTime) / 1000;
+    document.getElementById('timeSpent').innerText = `Время прохождения: ${timeSpent} секунд`;
+    showModal();
+  }
+}
+
+// Показать модальное окно
+function showModal() {
+  let modal = document.getElementById("modal");
+  modal.style.display = "block";
+
+  let span = document.getElementsByClassName("close")[0];
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+}
+
+// Внутри функции checkWord(wordClass) добавьте вызов функции checkIfAllCorrect() перед её закрытием:
+</script>
+
+</body>
+</html>
